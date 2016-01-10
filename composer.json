@@ -1,0 +1,28 @@
+{
+  "name": "leaf/leaf-distributer",
+  "version": "0.1.0",
+  "type": "library",
+  "description": "A distributed algorithm that can be used for redis and memcached which is written with PHP",
+  "keywords": [
+    "redis distributed algorithm",
+    "php"
+  ],
+  "homepage": "https://www.leafphp.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "hongshuai dong",
+      "email": "663280439@qq.com",
+      "homepage": "http://www.leafphp.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "psr/log": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Leaf\\Consistent\\Hashing": "src/"
+    }
+  }
+}
