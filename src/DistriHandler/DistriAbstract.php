@@ -2,7 +2,14 @@
 
 namespace Leaf\Distribution\DistriHandler;
 
-
+/**
+ * Class DistriAbstract
+ * 1.set config of this handler
+ * 2.init the handler
+ * 3.lookUp to find the config of a server node
+ *
+ * @package Leaf\Distribution\DistriHandler
+ */
 abstract class DistriAbstract
 {
 
@@ -18,7 +25,7 @@ abstract class DistriAbstract
     abstract public function lookUp($key = '');
 
     /**
-     * set the config of this distributer handler
+     * set the configure of this distributer handler
      *
      * @param array $arrConfigGroup
      *
@@ -35,6 +42,8 @@ abstract class DistriAbstract
 
         return $this;
     }
+
+    abstract public function init();
 
     /**
      * 根据配置组，将配置组转换为唯一的配置名
@@ -73,4 +82,6 @@ abstract class DistriAbstract
 
         return $return;
     }
+
+
 }

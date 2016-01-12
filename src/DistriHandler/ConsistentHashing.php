@@ -11,4 +11,9 @@ class ConsistentHashing extends DistriAbstract
         // TODO: Implement lookUp() method.
     }
 
+    public function init()
+    {
+        // TODO: Implement init() method.
+    }
+
 }

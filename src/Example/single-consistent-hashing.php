@@ -39,6 +39,6 @@ $arrConfig = [
 ];
 
 //获取一致性哈希的处理器
-$distriHandler = $distriManager->getDistributer()->instanceHandler()->setConfig($arrConfig);
+$distriHandler = $distriManager->getDistributer()->instanceHandler($arrConfig)->lookUp('aaa');
 
 

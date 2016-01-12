@@ -8,47 +8,65 @@ use Leaf\Distribution\DistriHandler\Modulo;
 
 /**
  * Class Distributer
- * 实现原理：①：模拟哈希环，②：在哈希换上，根据数组配置，落上很多虚拟节点，③：将key转换为整型，寻找合适的落点
+ * Distribution distributer
  *
- * @package Leaf\Consistent\Hashing
+ * @package Leaf\Distribution
  */
 class Distributer
 {
 
     /**
-     * distribution mode
+     * The type of the distribution algorithm
      *
      * @var int
      */
     protected $distriMode = DistriMode::DIS_CONSISTENT_HASHING;
 
     /**
-     * distribution handler
+     * The distribution handler of this distributer
      *
-     * @var null
+     * @var DistriAbstract
      */
     protected $distriHandler = null;
 
+
     /**
+     * Instance the distribution handler
+     * The handler could be consistent-hashing algorithm handler or modulo algorithm handler or a handler that customed
+     * by yourself.
+     *
+     * @param array $arrConfigGroup The configure group. You can config more than one servers group. Please see the
+     *                              configure example in Example/standard-config.php
      *
      * @return DistriAbstract
+     * @throws \Exception
      */
-    public function instanceHandler()
+    public function instanceHandler(array $arrConfigGroup = [])
     {
         $distriHandler = null;
-        switch ($this->distriMode) {
-            case DistriMode::DIS_CONSISTENT_HASHING:
-                $distriHandler = new ConsistentHashing();
-                break;
-            case DistriMode::DIS_MODULO:
-                $distriHandler = new Modulo();
-                break;
-        }
-        if ( !is_object($distriHandler) && $distriHandler instanceof DistriAbstract) {
-            $this->setDistriHandler($distriHandler);
+        try {
+            //instance a distribution handler
+            switch ($this->distriMode) {
+                case DistriMode::DIS_CONSISTENT_HASHING:
+                    $distriHandler = new ConsistentHashing();
+                    break;
+                case DistriMode::DIS_MODULO:
+                    $distriHandler = new Modulo();
+                    break;
+            }
+            if ( !is_object($distriHandler) && $distriHandler instanceof DistriAbstract) {
+                //set the configure of the distribution handler
+                $distriHandler->setConfig($arrConfigGroup);
+                //init the handler
+                $distriHandler->init();
+                //set the handler of this distributer
+                $this->setDistriHandler($distriHandler);
+            }
+        } catch (\Exception $e) {
+            throw $e;
         }
 
-        return $distriHandler;
+        return $this;
     }
 
     /**
@@ -68,7 +86,7 @@ class Distributer
      */
     public function setDistriMode($mode = DistriMode::DIS_CONSISTENT_HASHING)
     {
-        if (in_array($mode, DistriMode::$arrDistriMode)) {
+        if (in_array($mode, DistriMode::$arrDistriModeClass)) {
             $this->distriMode = $mode;
         }
         else {
@@ -105,9 +123,39 @@ class Distributer
         return $this;
     }
 
-    public function setConfig($arrConfigGroup = [])
+    /**
+     * init the distribution handler
+     *
+     * @return Distributer
+     */
+    public function initDistributionHandler()
     {
-        $this->getDistriHandler()->setConfig($arrConfigGroup);
+        if ($distributer = $this->getDistriHandler()) {
+            $distributer->init();
+        }
+        else {
+            throw new \RuntimeException('the distribution handler has not been setted yet!');
+        }
+
+        return $this;
+    }
+
+    /**
+     * find the config of a server node according to the param $key recevied
+     *
+     * @return Distributer
+     */
+    public function lookUp($key)
+    {
+        if ( !is_string($key) || empty( $key )) {
+            throw new \InvalidArgumentException('param error, empty param!');
+        }
+        if ($distributer = $this->getDistriHandler()) {
+            $distributer->lookUp($key);
+        }
+        else {
+            throw new \RuntimeException('the distribution handler has not been setted yet!');
+        }
 
         return $this;
     }
