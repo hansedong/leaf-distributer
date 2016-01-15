@@ -1,6 +1,6 @@
 <?php
 
-namespace Leaf\Distribution\DistriHandler;
+namespace Leaf\Distributer\DistriHandler;
 
 /**
  * Class DistriAbstract
@@ -8,12 +8,24 @@ namespace Leaf\Distribution\DistriHandler;
  * 2.init the handler
  * 3.lookUp to find the config of a server node
  *
- * @package Leaf\Distribution\DistriHandler
+ * @package Leaf\Distributer\DistriHandler
  */
 abstract class DistriAbstract
 {
 
-    protected $arrConfigGroup = [];
+    /**
+     * the config group of a cluster
+     *
+     * @var array
+     */
+    protected $clusterConfig = [];
+
+    /**
+     * server objects that have instantiated and connected to the real servers
+     *
+     * @var array
+     */
+    protected $keepAliveServers = [];
 
     /**
      * 根据key，获取具体的配置
@@ -27,14 +39,14 @@ abstract class DistriAbstract
     /**
      * set the configure of this distributer handler
      *
-     * @param array $arrConfigGroup
+     * @param array $configGroup
      *
      * @return $this
      */
-    public function setConfig(array $arrConfigGroup = [])
+    protected function setConfig(array $configGroup = [])
     {
-        if ( !empty( $arrConfigGroup )) {
-            $this->arrConfigGroup = $arrConfigGroup;
+        if ( !empty( $configGroup )) {
+            $this->clusterConfig = $configGroup;
         }
         else {
             throw new \InvalidArgumentException('set the config of distributer handler error! the config can not be empty!');
@@ -43,45 +55,6 @@ abstract class DistriAbstract
         return $this;
     }
 
-    abstract public function init();
-
-    /**
-     * 根据配置组，将配置组转换为唯一的配置名
-     *
-     * @param array $arrConfigGroup [ ['host'=>'192.168.200.85','port'=>6379,..],
-     *                              ['host'=>'192.168.200.85','port'=>6379,..],... ]
-     *
-     * @return string
-     * @throws \Exception
-     */
-    private function getConfigUniqueKey(array $arrConfigGroup = [])
-    {
-        $return = '';
-        if ( !empty( $arrConfigGroup )) {
-            $strKey = '';
-            //遍历数组，拼接子数组的key和val，组成一个字符串，用于hash
-            $arrString = [];
-            foreach ($arrConfigGroup as $key => &$arrConfig) {
-                if (is_array($arrConfig) && !empty( $arrConfig )) {
-                    ksort($arrConfig);
-                    $arrString[] = http_build_str($arrConfig);
-                    $arrConfig = null;
-                }
-                else {
-                    throw new \InvalidArgumentException("sub config error");
-                }
-            }
-            if ( !empty( $arrString )) {
-                $return = implode(';', $arrString);
-                $arrString = null;
-            }
-        }
-        else {
-            throw new \InvalidArgumentException("config error");
-        }
-
-        return $return;
-    }
-
+    abstract public function init(array $config);
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Leaf\Distribution\DistriHandler;
+namespace Leaf\Distributer\DistriHandler;
 
 
 class Modulo extends DistriAbstract
@@ -11,7 +11,7 @@ class Modulo extends DistriAbstract
         // TODO: Implement lookUp() method.
     }
 
-    public function init()
+    public function init(array $config)
     {
         // TODO: Implement init() method.
     }

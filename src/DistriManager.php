@@ -1,6 +1,6 @@
 <?php
 
-namespace Leaf\Distribution;
+namespace Leaf\Distributer;
 
 /**
  * Class DistriManager
@@ -8,7 +8,7 @@ namespace Leaf\Distribution;
  * If you hanve more than one clusters in your project, you may need to manage the distributers, this class is to help
  * you to manage them in a bright way.
  *
- * @package Leaf\Distribution
+ * @package Leaf\Distributer
  */
 class DistriManager
 {

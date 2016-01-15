@@ -1,6 +1,6 @@
 <?php
 
-namespace Leaf\Loger;
+namespace Leaf\Distributer;
 
 class Autoloader
 {
@@ -12,7 +12,7 @@ class Autoloader
     public static function register()
     {
         spl_autoload_register(function ($class) {
-            $prefix = 'Leaf\\Distribution';
+            $prefix = 'Leaf\\Distributer';
             $base_dir = __DIR__;
             $len = strlen($prefix);
             if (strncmp($prefix, $class, $len) !== 0) {

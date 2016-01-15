@@ -1,15 +1,15 @@
 <?php
 
-namespace Leaf\Distribution;
+namespace Leaf\Distributer;
 
-use Leaf\Distribution\DistriHandler\ConsistentHashing;
-use Leaf\Distribution\DistriHandler\Modulo;
+use Leaf\Distributer\DistriHandler\ConsistentHashing;
+use Leaf\Distributer\DistriHandler\Modulo;
 
 /**
  * Class DistriMode
  * The distribution type class
  *
- * @package Leaf\Distribution
+ * @package Leaf\Distributer
  */
 class DistriMode
 {

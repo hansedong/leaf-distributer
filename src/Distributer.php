@@ -1,16 +1,16 @@
 <?php
 
-namespace Leaf\Distribution;
+namespace Leaf\Distributer;
 
-use Leaf\Distribution\DistriHandler\ConsistentHashing;
-use Leaf\Distribution\DistriHandler\DistriAbstract;
-use Leaf\Distribution\DistriHandler\Modulo;
+use Leaf\Distributer\DistriHandler\ConsistentHashing;
+use Leaf\Distributer\DistriHandler\DistriAbstract;
+use Leaf\Distributer\DistriHandler\Modulo;
 
 /**
  * Class Distributer
  * Distribution distributer
  *
- * @package Leaf\Distribution
+ * @package Leaf\Distributer
  */
 class Distributer
 {
@@ -35,14 +35,15 @@ class Distributer
      * The handler could be consistent-hashing algorithm handler or modulo algorithm handler or a handler that customed
      * by yourself.
      *
-     * @param array $arrConfigGroup The configure group. You can config more than one servers group. Please see the
+     * @param array $clusterConfig  The configure group. You can config more than one servers group. Please see the
      *                              configure example in Example/standard-config.php
      *
      * @return DistriAbstract
      * @throws \Exception
      */
-    public function instanceHandler(array $arrConfigGroup = [])
+    public function init(array $clusterConfig = [])
     {
+        ini_set('display_errors', 1);
         $distriHandler = null;
         try {
             //instance a distribution handler
@@ -54,15 +55,14 @@ class Distributer
                     $distriHandler = new Modulo();
                     break;
             }
-            if ( !is_object($distriHandler) && $distriHandler instanceof DistriAbstract) {
-                //set the configure of the distribution handler
-                $distriHandler->setConfig($arrConfigGroup);
+            if (is_object($distriHandler) && ( is_subclass_of($distriHandler, DistriAbstract::class) )) {
                 //init the handler
-                $distriHandler->init();
+                $distriHandler->init($clusterConfig);
                 //set the handler of this distributer
                 $this->setDistriHandler($distriHandler);
             }
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             throw $e;
         }
 
@@ -86,7 +86,7 @@ class Distributer
      */
     public function setDistriMode($mode = DistriMode::DIS_CONSISTENT_HASHING)
     {
-        if (in_array($mode, DistriMode::$arrDistriModeClass)) {
+        if (array_key_exists($mode, DistriMode::$arrDistriModeClass)) {
             $this->distriMode = $mode;
         }
         else {
