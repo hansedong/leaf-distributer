@@ -14,7 +14,7 @@ class Hashing
      *
      * @return string
      */
-    public static function hash($str, $hashType = HashMode::MD5)
+    public static function hash($hashType = HashMode::MD5, $str)
     {
         return hash($str, $hashType);
     }

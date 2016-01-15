@@ -139,7 +139,7 @@ class ConsistentHashing extends DistriAbstract
         $return = null;
         if ( !empty( $config )) {
             ksort($config);
-            $return = Hashing::hash(http_build_query($config), HashMode::MD5);
+            $return = Hashing::hash(http_build_query($config), HashMode::SHA384);
         }
 
         return $return;
