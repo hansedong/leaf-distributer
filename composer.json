@@ -2,9 +2,10 @@
   "name": "leaf/leaf-distributer",
   "version": "0.1.0",
   "type": "library",
-  "description": "A distributed algorithm that can be used for redis and memcached which is written with PHP",
+  "description": "A distribution algorithm manager that can be used for redis and memcached which is written with PHP",
   "keywords": [
-    "redis distributed algorithm",
+    "distribution algorithm",
+    "consistent hashing",
     "php"
   ],
   "homepage": "https://www.leafphp.com",

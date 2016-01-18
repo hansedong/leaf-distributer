@@ -18,25 +18,29 @@
 return
 
     [
-        [
+        'cluster1' => [ //cluster name, required
+            //server group for writing data
             'write'  => [
-                ['host' => 'x.x.1.1', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'write', 'weight' => 1],
+                ['host' => 'x.x.1.11', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'weight' => 3], //weight: server weight
+                ['host' => 'x.x.1.12', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'weight' => 2],
             ],
+            //server group for reading data
             'read'   => [
-                ['host' => 'x.x.1.2', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'read', 'weight' => 1],
-                ['host' => 'x.x.1.3', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'read', 'weight' => 1],
+                ['host' => 'x.x.1.21', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'weight' => 1],
+                ['host' => 'x.x.1.31', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'weight' => 1],
             ],
+            //cluster weight
             'weight' => 1,  //cluster的权重配置，用于做hash虚拟节点数量分配
         ],
-        [
+        'cluster2' => [
             'write'  => [
-                ['host' => 'x.x.2.1', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'write', 'weight' => 1],
+                ['host' => 'x.x.2.11', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'weight' => 1],
             ],
             'read'   => [
-                ['host' => 'x.x.2.2', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'read', 'weight' => 1],
-                ['host' => 'x.x.2.3', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'read', 'weight' => 1],
-                ['host' => 'x.x.2.4', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'read', 'weight' => 1],
-                ['host' => 'x.x.2.5', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'type' => 'read', 'weight' => 1],
+                ['host' => 'x.x.2.21', 'port' => 6379, 'db' => 0, 'weight' => 1],
+                ['host' => 'x.x.2.31', 'port' => 6379, 'db' => 0, 'weight' => 1],
+                ['host' => 'x.x.2.41', 'port' => 6379, 'db' => 0, 'weight' => 1],
+                ['host' => 'x.x.2.51', 'port' => 6379, 'db' => 0, 'weight' => 1],
             ],
             'weight' => 1,
         ],

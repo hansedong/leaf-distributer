@@ -70,7 +70,7 @@ class Distributer
     }
 
     /**
-     * get the distribution mode
+     * Get the distribution mode
      *
      * @return int it can be one DistriMode::DIS_CONSISTENT_HASHING or DistriMode::Modulo etc
      */
@@ -95,9 +95,9 @@ class Distributer
     }
 
     /**
-     * get the distribution handler of this manager
+     * Get the distribution handler of this manager
      *
-     * @return DistriAbstract
+     * @return ConsistentHashing|Modulo|DistriAbstract
      */
     protected function getDistriHandler()
     {
@@ -105,7 +105,7 @@ class Distributer
     }
 
     /**
-     * set the distribution handler of this manager
+     * Set the distribution handler of this manager
      *
      * @param DistriAbstract $handler
      *
@@ -124,7 +124,7 @@ class Distributer
     }
 
     /**
-     * init the distribution handler
+     * Init the distribution handler
      *
      * @return Distributer
      */
@@ -141,23 +141,24 @@ class Distributer
     }
 
     /**
-     * find the config of a server node according to the param $key recevied
+     * Find the config of a server node according to the param $key recevied
      *
      * @return Distributer
      */
-    public function lookUp($key)
+    public function lookUp($key, $from = 'read')
     {
+        $config = [];
         if ( !is_string($key) || empty( $key )) {
             throw new \InvalidArgumentException('param error, empty param!');
         }
         if ($distributer = $this->getDistriHandler()) {
-            $distributer->lookUp($key);
+            $config = $distributer->lookUp($key, $from);
         }
         else {
             throw new \RuntimeException('the distribution handler has not been setted yet!');
         }
 
-        return $this;
+        return $config;
     }
 
 }

@@ -14,6 +14,10 @@ $distriManager = new DistriManager();
 $configGroup = require( 'standard-config.php' );
 
 //获取一致性哈希的处理器
-$distriHandler = $distriManager->getDistributer()->init($configGroup);
+$distributer = $distriManager->getDistributer()->init($configGroup);
+
+$config = $distributer->lookUp('aa','write');
+
+var_dump($config);
 
 
