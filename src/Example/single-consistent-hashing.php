@@ -13,11 +13,8 @@ $distriManager = new DistriManager();
 //定义配置
 $configGroup = require( 'standard-config.php' );
 
-//获取一致性哈希的处理器
+//获取分布式算法分发对象
 $distributer = $distriManager->getDistributer()->init($configGroup);
 
-$config = $distributer->lookUp('aa','write');
-
-var_dump($config);
-
+$config = $distributer->lookUp('aa', 'write');
 

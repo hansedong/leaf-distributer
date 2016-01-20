@@ -14,39 +14,33 @@ abstract class DistriAbstract
 {
 
     /**
-     * the config group of a cluster
+     * 当前分布式算法处理器所处理的原始集群配置信息
      *
      * @var array
      */
-    protected $clusterConfig = [];
+    public $clusterConfig = [];
 
     /**
-     * server objects that have instantiated and connected to the real servers
+     * 根据key，查找具体的server配置信息
      *
-     * @var array
-     */
-    protected $keepAliveServers = [];
-
-    /**
-     * 根据key，获取具体的配置
-     *
-     * @param string $key
+     * @param string $key  要查找配置的key
+     * @param string $from 查找配置的类型，读配置还是写配置，默认为读配置read
      *
      * @return array
      */
-    abstract public function lookUp($key = '');
+    abstract public function lookUp($key = '', $from = 'read');
 
     /**
-     * set the configure of this distributer handler
+     * 为当前分布式算法处理器保存原始集群配置信息
      *
-     * @param array $configGroup
+     * @param array $clusterConfig
      *
      * @return $this
      */
-    protected function setConfig(array $configGroup = [])
+    protected function setConfig(array $clusterConfig = [])
     {
-        if ( !empty( $configGroup )) {
-            $this->clusterConfig = $configGroup;
+        if ( !empty( $clusterConfig )) {
+            $this->clusterConfig = $clusterConfig;
         }
         else {
             throw new \InvalidArgumentException('set the config of distributer handler error! the config can not be empty!');

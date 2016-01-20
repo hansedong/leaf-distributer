@@ -2,12 +2,17 @@
 
 namespace Leaf\Distributer;
 
+/**
+ * Class Autoloader
+ * 自动加载器
+ *
+ * @package Leaf\Distributer
+ */
 class Autoloader
 {
 
     /**
-     * register a autoloader for the situation that you don't have the php composer so that you can also use this
-     * package
+     * 倘若你的项目里没有使用composer，那么也依然可以用本组件，只需要调用下面的方法，注册一个自动加载机制即可。
      */
     public static function register()
     {

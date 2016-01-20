@@ -4,9 +4,10 @@ namespace Leaf\Distributer;
 
 /**
  * Class DistriManager
- * The manager of distributers
- * If you hanve more than one clusters in your project, you may need to manage the distributers, this class is to help
- * you to manage them in a bright way.
+ *
+ * 分布式分发器器管理器
+ * 你的项目中，可能有多于一个分布式分发器。这个时候你就需要这个manager来做管理了。例如：你的项目中有2个redis大集群。第一个集群
+ * 有一致性哈希做分布式，另外一个大群用取模算法做分布式。详情 READEME.MD
  *
  * @package Leaf\Distributer
  */
@@ -18,12 +19,12 @@ class DistriManager
     /**
      * 获取一个分布式分配器
      *
-     * @param string $name Distributer name. You needn't to set this param if your project use one cluster only, but if
-     *                     you can foresee that you will have more than one clusters in your project. You are
-     *                     recommended to set this distributer name now to make a distinction between the clusters.
-     * @param int    $mode The distribution type of the distributer. DistriMode::DIS_CONSISTENT_HASHING as consistent
-     *                     hashing algorithm(default value of this param) and DistriMode::DIS_MODULO as modules
-     *                     algorithm.
+     * @param string $name  分布式分发器名。
+     *                      默认情况下，你可以不设置此参数，系统会用默认值“default”来做为默认的分布式分发器的名称。但是，如果你在
+     *                      项目规划前期，就已经预料到你将来的项目可能会用到多个集群的情况。每个集群处理一块儿业务，每个集群是多个
+     *                      redis实例组成。那么，推荐你一开始就设置此参数。
+     *
+     * @param int    $mode  分布式分发器所用的分布式算法，默认为一致性哈希分布式算法
      *
      * @return Distributer
      */
@@ -31,9 +32,11 @@ class DistriManager
     {
         $distributer = null;
         if ( !empty( $name ) && is_string($name)) {
+            //如果分发器存在，则直接返回
             if (isset( $this->$name )) {
                 $distributer = $this->$name;
             }
+            //如果分发器不存在，则获取一个分发器实例
             else {
                 $distributer = $this->getAClonedDistributer();
                 $distributer->setDistriMode($mode);
@@ -48,8 +51,9 @@ class DistriManager
     }
 
     /**
-     * Get a cloned object of the distributer
-     * Clone pattern, is one of design patterns of PHP，is can decrease the overhead of the system in a way.
+     * 获取一个分布式分发器的克隆对象
+     * 应用PHP设计模式之一的克隆模式。克隆模式不需要直接实例化对象，在某种情况上来看，克隆模式由于是直接做内存拷贝，效率是高
+     * 过直接实例化对象然后做各种属性赋值操作的
      *
      * @return Distributer
      */

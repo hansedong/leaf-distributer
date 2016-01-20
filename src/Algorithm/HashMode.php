@@ -4,12 +4,16 @@ namespace Leaf\Distributer\Algorithm;
 
 /**
  * Class HashMode
+ * 哈希算法的类型
  *
  * @package Leaf\Distributer\Algorithm
  */
 class HashMode
 {
 
+    /**
+     * 将字符串转换为hash值的常量
+     */
     const STR_MD5 = 'md5';
     const STR_SHA1 = 'sha1';
     const STR_SHA256 = 'sha256';
@@ -26,6 +30,9 @@ class HashMode
     const STR_CRC32 = 'crc32';
     const STR_CRC32B = 'crc32b';
 
+    /**
+     * 将字符串转换为整型的常量
+     */
     const NUM_CRC32 = 'crc32';
     const NUM_CRC64 = 'crc64';
 

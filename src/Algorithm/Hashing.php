@@ -2,14 +2,20 @@
 
 namespace Leaf\Distributer\Algorithm;
 
+/**
+ * Class Hashing
+ * 哈希算法
+ *
+ * @package Leaf\Distributer\Algorithm
+ */
 class Hashing
 {
 
     /**
-     * Convert a string to another string value.
+     * 将一个字符串转换为一个字符串的哈希值
      *
-     * @param string $str
-     * @param string $hashType
+     * @param string $str      被转换的字符串
+     * @param string $hashType 采用何种哈希函数来转换，默认是MD5算法
      *
      * @return string
      */
@@ -19,10 +25,10 @@ class Hashing
     }
 
     /**
-     * Convert a string to a numberic value.
+     * 将一个字符串转换为一个数值类型
      *
-     * @param string $str
-     * @param string $hashType
+     * @param string $str      被转换的字符串
+     * @param string $hashType 采用哈中哈希函数转换，默认是CRC64
      *
      * @return int|float
      */
@@ -36,6 +42,13 @@ class Hashing
         }
     }
 
+    /**
+     * CRC32算法
+     *
+     * @param $str
+     *
+     * @return float
+     */
     protected static function crc32($str)
     {
         $return = crc32($str);
@@ -44,6 +57,8 @@ class Hashing
     }
 
     /**
+     * CRC64算法
+     *
      * @param string $string
      * @param string $format
      *
@@ -59,17 +74,13 @@ class Hashing
     public static function crc64($string, $format = '%u')
     {
         static $crc64tab;
-
         if ($crc64tab === null) {
             $crc64tab = static::crc64Table();
         }
-
         $crc = 0;
-
         for ($i = 0; $i < strlen($string); $i++) {
             $crc = $crc64tab[( $crc ^ ord($string[$i]) ) & 0xff] ^ ( ( $crc >> 8 ) & ~( 0xff << 56 ) );
         }
-
         $return = sprintf($format, $crc);
         if ($format === '%u') {
             $return = floatval($return);
@@ -84,13 +95,10 @@ class Hashing
     protected static function crc64Table()
     {
         $crc64tab = [];
-
         // ECMA polynomial
         $poly64rev = ( 0xC96C5795 << 32 ) | 0xD7870F42;
-
         // ISO polynomial
         // $poly64rev = (0xD8 << 56);
-
         for ($i = 0; $i < 256; $i++) {
             for ($part = $i, $bit = 0; $bit < 8; $bit++) {
                 if ($part & 1) {
@@ -100,7 +108,6 @@ class Hashing
                     $part = ( $part >> 1 ) & ~( 0x8 << 60 );
                 }
             }
-
             $crc64tab[$i] = $part;
         }
 
