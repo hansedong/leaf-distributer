@@ -61,6 +61,13 @@ class ConsistentHashing extends DistriAbstract
     protected $serverHashConfigMap = [];
 
     /**
+     * 哈希环上节点的值的生成算法，默认是sha384算法
+     *
+     * @var string
+     */
+    protected $hashStringFunc = HashMode::STR_SHA384;
+
+    /**
      * 根据key，查找具体的server配置信息
      *
      * @param string $key  要查找配置信息的Key
@@ -157,7 +164,7 @@ class ConsistentHashing extends DistriAbstract
             if ( !empty( $this->clusterConfig )) {
                 foreach ($this->clusterConfig as $clusterName => $currentClusterConfig) {
                     //为集群配置创建hash值
-                    $clusterHashKey = Hashing::hashToStr($clusterName, HashMode::STR_SHA384);
+                    $clusterHashKey = Hashing::hashToStr($clusterName, $this->hashStringFunc);
                     if (empty( $clusterHashKey )) {
                         throw new \RuntimeException('Make Cluster Key error! The config of the cluster may be has something wrong!');
                     }
@@ -245,6 +252,22 @@ class ConsistentHashing extends DistriAbstract
                     }
                 }
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * 指定生成哈喜欢上节点的值的哈希函数
+     *
+     * @param string $hashStringFunc
+     *
+     * @return $this
+     */
+    public function setHashFunc($hashStringFunc = HashMode::STR_SHA384)
+    {
+        if ( !empty( $hashStringFunc ) && is_string($hashStringFunc)) {
+            $this->hashStringFunc = $hashStringFunc;
         }
 
         return $this;

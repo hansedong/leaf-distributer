@@ -18,7 +18,7 @@
 return
 
     [
-        'cluster1' => [ //cluster name, required
+        'groupA' => [ //cluster name, required
             //server group for writing data
             'write'  => [
                 ['host' => 'x.x.1.11', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'weight' => 3], //weight: server weight
@@ -32,7 +32,7 @@ return
             //cluster weight
             'weight' => 1,  //cluster的权重配置，用于做hash虚拟节点数量分配
         ],
-        'cluster2' => [
+        'GroupB' => [
             'write'  => [
                 ['host' => 'x.x.2.11', 'port' => 6379, 'auth' => 'passwd', 'db' => 0, 'weight' => 1],
             ],

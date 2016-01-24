@@ -17,4 +17,3 @@ $configGroup = require( 'standard-config.php' );
 $distributer = $distriManager->getDistributer()->init($configGroup);
 
 $config = $distributer->lookUp('aa', 'write');
-
